@@ -33,7 +33,7 @@ router.get('/recipients', (req, res) => {
   }
 
   const recipients = dealers
-    .filter(d => d.email && d.email.trim())
+    .filter(d => d.email && d.email.trim() && !d.email.toLowerCase().endsWith('@toyota.com'))
     .map(d => ({
       dealer_code: d.dealer_code,
       name: d.name,
