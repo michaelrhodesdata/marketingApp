@@ -1,27 +1,41 @@
 // Email-safe HTML templates
-// Each template has:
-//   defaultBody: initial Quill content (HTML)
-//   wrap(bodyHtml): wraps the body HTML in the full email template
 
-const BASE_URL = 'https://dealer-app-429993829712.us-central1.run.app';
-const LOGO_WHITE = `${BASE_URL}/revusup-logo-white.png`;
-const LOGO_BLACK = `${BASE_URL}/revusup-logo-black.png`;
 const REVUSUP_URL = 'https://www.revusup.com';
+const BLUE = '#1a56db';
+const BLUE_DARK = '#1344b0';
 
-const footer = (dark = false) => `
+const revusupHeader = () => `
 <tr>
-  <td style="background:${dark ? '#1a1a1a' : '#f8f8f8'};padding:20px 32px;border-radius:0 0 8px 8px;text-align:center;">
-    <a href="${REVUSUP_URL}" target="_blank" style="text-decoration:none;">
-      <img src="${LOGO_BLACK}" alt="Revusup" width="120" style="display:inline-block;margin-bottom:8px;opacity:${dark ? '0' : '1'};" />
-    </a>
-    ${dark ? `<br><a href="${REVUSUP_URL}" target="_blank" style="text-decoration:none;"><img src="${LOGO_WHITE}" alt="Revusup" width="120" style="display:inline-block;margin-bottom:8px;" /></a>` : ''}
-    <p style="margin:4px 0 0;font-size:11px;color:${dark ? '#666' : '#999'};">
-      Powered by <a href="${REVUSUP_URL}" target="_blank" style="color:#EB0A1E;text-decoration:none;font-weight:600;">Revusup.com</a>
-      &nbsp;·&nbsp; Automotive Dealer Solutions
+  <td style="background:${BLUE};padding:18px 32px;border-radius:8px 8px 0 0;">
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td>
+          <a href="${REVUSUP_URL}" target="_blank" style="text-decoration:none;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;font-family:Arial,sans-serif;">Revusup.com</a>
+        </td>
+        <td align="right">
+          <a href="${REVUSUP_URL}" target="_blank" style="color:rgba(255,255,255,0.8);font-size:12px;text-decoration:none;font-family:Arial,sans-serif;">Visit us →</a>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>`;
+
+const revusupTagline = () => `
+<tr>
+  <td style="background:#f0f5ff;padding:20px 32px;border-left:4px solid ${BLUE};margin:0;">
+    <p style="margin:0 0 6px;font-size:16px;font-weight:700;color:#111;font-family:Arial,sans-serif;">Tired of Endless Spreadsheets?</p>
+    <p style="margin:0 0 12px;font-size:13px;color:#444;line-height:1.6;font-family:Arial,sans-serif;">We were too. That's why we built a CRM made for dealership service departments — one that turns disconnected data into clear insights. No more guesswork, manual tracking, or hours lost piecing reports together.</p>
+    <a href="${REVUSUP_URL}" target="_blank" style="display:inline-block;background:${BLUE};color:#fff;font-size:13px;font-weight:600;text-decoration:none;padding:9px 20px;border-radius:5px;font-family:Arial,sans-serif;">Learn More at Revusup.com →</a>
+  </td>
+</tr>`;
+
+const revusupFooter = () => `
+<tr>
+  <td style="background:#f8f8f8;padding:16px 32px;border:1px solid #e8e8e8;border-top:none;border-radius:0 0 8px 8px;text-align:center;">
+    <p style="margin:0 0 4px;font-family:Arial,sans-serif;font-size:12px;color:#555;">
+      Powered by <a href="${REVUSUP_URL}" target="_blank" style="color:${BLUE};text-decoration:none;font-weight:700;">Revusup.com</a> · Dealership CRM & Analytics
     </p>
-    <p style="margin:4px 0 0;font-size:10px;color:${dark ? '#555' : '#bbb'};">
-      © ${new Date().getFullYear()} Revusup. All rights reserved.
-    </p>
+    <p style="margin:0;font-size:10px;color:#bbb;font-family:Arial,sans-serif;">© ${new Date().getFullYear()} Revusup. All rights reserved.</p>
   </td>
 </tr>`;
 
@@ -35,32 +49,14 @@ export const TEMPLATES = {
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:20px 0;">
     <tr><td align="center">
       <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-        <!-- Header -->
-        <tr>
-          <td style="background:#EB0A1E;padding:20px 32px;border-radius:8px 8px 0 0;">
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td>
-                  <a href="${REVUSUP_URL}" target="_blank" style="text-decoration:none;">
-                    <img src="${LOGO_WHITE}" alt="Revusup" height="36" style="display:block;" />
-                  </a>
-                </td>
-                <td align="right">
-                  <a href="${REVUSUP_URL}" target="_blank" style="color:rgba(255,255,255,0.8);font-size:12px;text-decoration:none;">revusup.com →</a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <!-- Body -->
+        ${revusupHeader()}
         <tr>
           <td style="background:#ffffff;padding:32px;border-left:1px solid #e8e8e8;border-right:1px solid #e8e8e8;">
-            <div style="color:#333333;font-size:15px;line-height:1.7;">
-              ${body}
-            </div>
+            <div style="color:#333333;font-size:15px;line-height:1.7;">${body}</div>
           </td>
         </tr>
-        ${footer(false)}
+        ${revusupTagline()}
+        ${revusupFooter()}
       </table>
     </td></tr>
   </table>
@@ -73,26 +69,18 @@ export const TEMPLATES = {
     wrap: (body) => `<!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-<body style="margin:0;padding:0;background:#f0f0f0;font-family:Georgia,serif;">
+<body style="margin:0;padding:0;background:#f0f0f0;font-family:Arial,Helvetica,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f0f0;padding:20px 0;">
     <tr><td align="center">
       <table width="620" cellpadding="0" cellspacing="0" style="max-width:620px;width:100%;">
-        <!-- Header Banner -->
+        ${revusupHeader()}
+        <!-- Subheader -->
         <tr>
-          <td style="background:#1a1a1a;padding:0;border-radius:8px 8px 0 0;overflow:hidden;">
+          <td style="background:#1344b0;padding:10px 32px;">
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="background:#EB0A1E;padding:12px 20px;width:200px;">
-                  <a href="${REVUSUP_URL}" target="_blank" style="text-decoration:none;">
-                    <img src="${LOGO_WHITE}" alt="Revusup" height="32" style="display:block;" />
-                  </a>
-                </td>
-                <td style="background:#1a1a1a;padding:14px 24px;">
-                  <span style="color:#fff;font-size:16px;font-family:Arial,sans-serif;font-weight:300;letter-spacing:1px;">DEALER NEWSLETTER</span>
-                </td>
-                <td style="background:#1a1a1a;padding:14px 24px;" align="right">
-                  <span style="color:#888;font-size:11px;font-family:Arial,sans-serif;">${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
-                </td>
+                <td><span style="color:#fff;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">DEALER NEWSLETTER</span></td>
+                <td align="right"><span style="color:rgba(255,255,255,0.6);font-size:11px;font-family:Arial,sans-serif;">${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span></td>
               </tr>
             </table>
           </td>
@@ -102,30 +90,22 @@ export const TEMPLATES = {
           <td style="background:#ffffff;padding:0;">
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <!-- Main content -->
-                <td style="padding:28px 24px;width:68%;vertical-align:top;border-right:1px solid #eee;">
+                <td style="padding:28px 24px;width:66%;vertical-align:top;border-right:1px solid #eee;">
                   <div style="color:#222;font-size:14px;line-height:1.8;">${body}</div>
                 </td>
-                <!-- Sidebar -->
-                <td style="padding:28px 20px;width:32%;vertical-align:top;background:#fafafa;">
-                  <div style="font-family:Arial,sans-serif;">
-                    <p style="font-size:12px;font-weight:700;color:#EB0A1E;text-transform:uppercase;letter-spacing:1px;margin:0 0 12px;">Quick Links</p>
-                    <p style="font-size:13px;margin:0 0 8px;"><a href="${REVUSUP_URL}" target="_blank" style="color:#333;text-decoration:none;">→ Revusup.com</a></p>
-                    <p style="font-size:13px;margin:0 0 8px;"><a href="${REVUSUP_URL}/dealers" target="_blank" style="color:#333;text-decoration:none;">→ Dealer Portal</a></p>
-                    <p style="font-size:13px;margin:0 0 8px;"><a href="${REVUSUP_URL}/solutions" target="_blank" style="color:#333;text-decoration:none;">→ Our Solutions</a></p>
-                    <p style="font-size:13px;margin:0 0 8px;"><a href="${REVUSUP_URL}/contact" target="_blank" style="color:#333;text-decoration:none;">→ Contact Us</a></p>
-                    <hr style="border:none;border-top:1px solid #eee;margin:16px 0;">
-                    <a href="${REVUSUP_URL}" target="_blank" style="text-decoration:none;">
-                      <img src="${LOGO_BLACK}" alt="Revusup" width="100" style="display:block;margin-bottom:8px;" />
-                    </a>
-                    <p style="font-size:11px;color:#999;line-height:1.5;margin:0;">Automotive Dealer Solutions</p>
-                  </div>
+                <td style="padding:28px 20px;width:34%;vertical-align:top;background:#fafafa;">
+                  <p style="font-size:12px;font-weight:700;color:${BLUE};text-transform:uppercase;letter-spacing:1px;margin:0 0 12px;">Quick Links</p>
+                  <p style="font-size:13px;margin:0 0 8px;"><a href="${REVUSUP_URL}" target="_blank" style="color:#333;text-decoration:none;">→ Revusup.com</a></p>
+                  <p style="font-size:13px;margin:0 0 8px;"><a href="${REVUSUP_URL}/demo" target="_blank" style="color:#333;text-decoration:none;">→ Schedule a Demo</a></p>
+                  <p style="font-size:13px;margin:0 0 8px;"><a href="${REVUSUP_URL}/solutions" target="_blank" style="color:#333;text-decoration:none;">→ Our Solutions</a></p>
+                  <p style="font-size:13px;margin:0 0 8px;"><a href="${REVUSUP_URL}/contact" target="_blank" style="color:#333;text-decoration:none;">→ Contact Us</a></p>
                 </td>
               </tr>
             </table>
           </td>
         </tr>
-        ${footer(true)}
+        ${revusupTagline()}
+        ${revusupFooter()}
       </table>
     </td></tr>
   </table>
@@ -142,37 +122,21 @@ export const TEMPLATES = {
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:20px 0;">
     <tr><td align="center">
       <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-        <!-- Hero banner -->
+        ${revusupHeader()}
+        <!-- Hero accent bar -->
+        <tr><td style="background:${BLUE_DARK};padding:6px 32px;">
+          <span style="color:rgba(255,255,255,0.7);font-size:11px;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">Official Communication</span>
+        </td></tr>
         <tr>
-          <td style="background:linear-gradient(135deg,#EB0A1E 0%,#c00018 100%);padding:40px 32px;text-align:center;border-radius:8px 8px 0 0;">
-            <a href="${REVUSUP_URL}" target="_blank" style="text-decoration:none;">
-              <img src="${LOGO_WHITE}" alt="Revusup" height="42" style="display:inline-block;margin-bottom:16px;" />
-            </a>
-            <p style="margin:0;color:rgba(255,255,255,0.75);font-size:12px;letter-spacing:3px;text-transform:uppercase;">Official Communication</p>
-            <p style="margin:8px 0 0;color:rgba(255,255,255,0.6);font-size:11px;">
-              <a href="${REVUSUP_URL}" target="_blank" style="color:rgba(255,255,255,0.7);text-decoration:none;">revusup.com</a>
-            </p>
-          </td>
-        </tr>
-        <!-- Divider accent -->
-        <tr>
-          <td style="background:#fff;padding:0;">
-            <div style="height:4px;background:linear-gradient(90deg,#EB0A1E,#ff6b6b,#EB0A1E);"></div>
-          </td>
-        </tr>
-        <!-- Body -->
-        <tr>
-          <td style="background:#ffffff;padding:36px 32px;">
-            <div style="color:#222;font-size:15px;line-height:1.75;">
-              ${body}
-            </div>
-            <!-- CTA Button -->
+          <td style="background:#ffffff;padding:36px 32px;border-left:1px solid #e8e8e8;border-right:1px solid #e8e8e8;">
+            <div style="color:#222;font-size:15px;line-height:1.75;">${body}</div>
             <div style="text-align:center;margin-top:32px;">
-              <a href="${REVUSUP_URL}" target="_blank" style="display:inline-block;background:#EB0A1E;color:#ffffff;font-size:15px;font-weight:700;text-decoration:none;padding:14px 36px;border-radius:6px;letter-spacing:0.5px;">Visit Revusup.com →</a>
+              <a href="${REVUSUP_URL}" target="_blank" style="display:inline-block;background:${BLUE};color:#ffffff;font-size:15px;font-weight:700;text-decoration:none;padding:14px 36px;border-radius:6px;">Visit Revusup.com →</a>
             </div>
           </td>
         </tr>
-        ${footer(true)}
+        ${revusupTagline()}
+        ${revusupFooter()}
       </table>
     </td></tr>
   </table>
@@ -189,33 +153,31 @@ export const TEMPLATES = {
   <table width="100%" cellpadding="0" cellspacing="0">
     <tr><td style="padding:32px;" align="center">
       <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
-        <!-- Simple header -->
         <tr>
-          <td style="padding-bottom:20px;border-bottom:2px solid #EB0A1E;">
+          <td style="padding-bottom:16px;border-bottom:3px solid ${BLUE};">
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td>
-                  <a href="${REVUSUP_URL}" target="_blank" style="text-decoration:none;">
-                    <img src="${LOGO_BLACK}" alt="Revusup" height="28" style="display:block;" />
-                  </a>
-                </td>
-                <td align="right">
-                  <a href="${REVUSUP_URL}" target="_blank" style="color:#EB0A1E;font-size:12px;text-decoration:none;font-weight:600;">revusup.com →</a>
-                </td>
+                <td><a href="${REVUSUP_URL}" target="_blank" style="text-decoration:none;color:${BLUE};font-size:20px;font-weight:700;font-family:Arial,sans-serif;">Revusup.com</a></td>
+                <td align="right"><a href="${REVUSUP_URL}" target="_blank" style="color:${BLUE};font-size:12px;text-decoration:none;">Visit us →</a></td>
               </tr>
             </table>
           </td>
         </tr>
-        <!-- Body -->
         <tr>
-          <td style="padding:28px 0;color:#333;font-size:14px;line-height:1.8;">
-            ${body}
+          <td style="padding:28px 0;color:#333;font-size:14px;line-height:1.8;">${body}</td>
+        </tr>
+        <!-- Tagline block -->
+        <tr>
+          <td style="background:#f0f5ff;padding:16px 20px;border-left:4px solid ${BLUE};border-radius:0 4px 4px 0;margin-bottom:20px;">
+            <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#111;">Tired of Endless Spreadsheets?</p>
+            <p style="margin:0 0 10px;font-size:12px;color:#555;line-height:1.6;">We were too. That's why we built a CRM made for dealership service departments — one that turns disconnected data into clear insights.</p>
+            <a href="${REVUSUP_URL}" target="_blank" style="color:${BLUE};font-size:12px;font-weight:600;text-decoration:none;">Learn More →</a>
           </td>
         </tr>
-        <!-- Simple footer -->
+        <tr><td style="padding-top:4px;"></td></tr>
         <tr>
-          <td style="padding-top:20px;border-top:1px solid #eee;color:#aaa;font-size:11px;line-height:1.6;">
-            Powered by <a href="${REVUSUP_URL}" target="_blank" style="color:#EB0A1E;text-decoration:none;font-weight:600;">Revusup.com</a> · Automotive Dealer Solutions<br>
+          <td style="padding-top:16px;border-top:1px solid #eee;color:#bbb;font-size:11px;line-height:1.6;">
+            Powered by <a href="${REVUSUP_URL}" target="_blank" style="color:${BLUE};text-decoration:none;font-weight:600;">Revusup.com</a> · Dealership CRM & Analytics<br>
             © ${new Date().getFullYear()} Revusup. All rights reserved.
           </td>
         </tr>
