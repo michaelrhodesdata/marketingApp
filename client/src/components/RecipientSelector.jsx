@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { apiFetch } from '../api.js';
 
 const styles = {
   panel: {
@@ -81,7 +82,7 @@ export default function RecipientSelector({ onRecipientsChange }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch('/api/dealers/states')
+    apiFetch('/api/dealers/states')
       .then(r => r.json())
       .then(setStates)
       .catch(console.error);
@@ -102,7 +103,7 @@ export default function RecipientSelector({ onRecipientsChange }) {
       onRecipientsChange([]);
       return;
     }
-    fetch(`/api/email/recipients?${params}`)
+    apiFetch(`/api/email/recipients?${params}`)
       .then(r => r.json())
       .then(data => {
         setRecipients(data.recipients);

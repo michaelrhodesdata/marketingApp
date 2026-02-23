@@ -38,9 +38,12 @@ try {
 app.locals.dealers = dealers;
 app.locals.serviceEmails = serviceEmails;
 
+const auth = require('./middleware/auth');
+
 // API Routes
-app.use('/api/dealers', require('./routes/dealers'));
-app.use('/api/email', require('./routes/email'));
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/dealers', auth, require('./routes/dealers'));
+app.use('/api/email', auth, require('./routes/email'));
 
 // Health check
 app.get('/health', (req, res) => res.json({ status: 'ok', dealers: dealers.length }));

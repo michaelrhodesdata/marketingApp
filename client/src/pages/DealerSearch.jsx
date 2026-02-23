@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { apiFetch } from '../api.js';
 
 const styles = {
   page: { padding: '24px', maxWidth: '1400px', margin: '0 auto' },
@@ -94,7 +95,7 @@ export default function DealerSearch() {
   const [searched, setSearched] = useState(false);
 
   useEffect(() => {
-    fetch('/api/dealers/states')
+    apiFetch('/api/dealers/states')
       .then(r => r.json())
       .then(setStates)
       .catch(console.error);
@@ -104,7 +105,7 @@ export default function DealerSearch() {
 
   useEffect(() => {
     if (state) {
-      fetch(`/api/dealers/cities?state=${state}`)
+      apiFetch(`/api/dealers/cities?state=${state}`)
         .then(r => r.json())
         .then(setCities)
         .catch(console.error);
@@ -121,7 +122,7 @@ export default function DealerSearch() {
     if (st) params.set('state', st);
     if (ct) params.set('city', ct);
     if (zp) params.set('zip', zp);
-    fetch(`/api/dealers?${params}`)
+    apiFetch(`/api/dealers?${params}`)
       .then(r => r.json())
       .then(data => {
         setDealers(data.dealers);

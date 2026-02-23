@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { TEMPLATES } from './emailTemplates.js';
+import { apiFetch } from '../api.js';
 
 const styles = {
   panel: {
@@ -191,7 +192,7 @@ export default function EmailBuilder({ recipients }) {
     const formData = new FormData();
     formData.append('image', file);
     try {
-      const res = await fetch('/api/email/upload', { method: 'POST', body: formData });
+      const res = await apiFetch('/api/email/upload', { method: 'POST', body: formData });
       const data = await res.json();
       if (data.url && quillRef.current) {
         const quill = quillRef.current.getEditor();
@@ -229,7 +230,7 @@ export default function EmailBuilder({ recipients }) {
     attachments.forEach(f => formData.append('attachments', f));
 
     try {
-      const res = await fetch('/api/email/send', { method: 'POST', body: formData });
+      const res = await apiFetch('/api/email/send', { method: 'POST', body: formData });
       const data = await res.json();
       if (res.ok) {
         setStatus({ type: 'success', msg: `Sent: ${data.sent} ✓  Failed: ${data.failed}${data.failed > 0 ? ' (check server logs)' : ''}` });
@@ -248,7 +249,7 @@ export default function EmailBuilder({ recipients }) {
     if (!subject.trim()) { setStatus({ type: 'error', msg: 'Enter a subject line.' }); return; }
     setSending(true);
     try {
-      const res = await fetch('/api/email/test', {
+      const res = await apiFetch('/api/email/test', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ to: testEmail, subject, html: getFinalHtml() }),
