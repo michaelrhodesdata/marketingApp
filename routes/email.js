@@ -100,9 +100,9 @@ router.post('/send', upload.array('attachments', 20), async (req, res) => {
       failed++;
       errors.push({ email: recipient.email, error: err.message });
     }
-    // Rate limit: 200ms between sends
+    // Rate limit: 100ms between sends
     if (recipients.indexOf(recipient) < recipients.length - 1) {
-      await sleep(200);
+      await sleep(100);
     }
   }
 
