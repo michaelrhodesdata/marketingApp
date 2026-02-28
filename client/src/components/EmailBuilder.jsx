@@ -317,6 +317,7 @@ export default function EmailBuilder({ recipients }) {
                 <input ref={attachInputRef} type="file" multiple style={{ display: 'none' }} onChange={handleAttachment} />
               </div>
             </div>
+            <style>{`.ql-editor { min-height: 380px; font-size: 14px; line-height: 1.7; } .ql-toolbar { flex-wrap: wrap; }`}</style>
             <div style={{ marginTop: '8px', border: '1px solid #ddd', borderRadius: '6px', overflow: 'hidden' }}>
               <ReactQuill
                 ref={quillRef}
@@ -324,7 +325,6 @@ export default function EmailBuilder({ recipients }) {
                 value={bodyHtml}
                 onChange={setBodyHtml}
                 modules={quillModules}
-                style={{ height: '300px' }}
               />
             </div>
           </div>
